@@ -1,52 +1,71 @@
-body {
-  margin: 0;
-  font-family: Arial;
-  background: #0f0f1a;
-  color: white;
+document.addEventListener("DOMContentLoaded", () => {
+
+const products = [
+  { id: 1, name: "Cool Item 1", price: 10 },
+  { id: 2, name: "Cool Item 2", price: 15 },
+  { id: 3, name: "Cool Item 3", price: 20 }
+];
+
+let cart = [];
+
+const box = document.getElementById("products");
+
+function loadProducts() {
+  box.innerHTML = "";
+
+  products.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "product";
+
+    div.innerHTML = `
+      <h3>${p.name}</h3>
+      <p>$${p.price}</p>
+      <button onclick="addToCart(${p.id})">Add to Cart</button>
+    `;
+
+    box.appendChild(div);
+  });
 }
 
-header {
-  text-align: center;
-  padding: 20px;
-  background: linear-gradient(90deg, #6a00ff, #00d4ff);
+window.addToCart = function(id) {
+  const item = products.find(p => p.id === id);
+  cart.push(item);
+  updateCart();
 }
 
-#products {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  padding: 20px;
+function updateCart() {
+  const box = document.getElementById("cart-items");
+  box.innerHTML = "";
+
+  let total = 0;
+
+  cart.forEach(item => {
+    total += item.price;
+
+    const div = document.createElement("div");
+    div.textContent = `${item.name} - $${item.price}`;
+    box.appendChild(div);
+  });
+
+  document.getElementById("total").innerText = "Total: $" + total;
 }
 
-.product {
-  background: #1a1a2e;
-  padding: 15px;
-  border-radius: 10px;
+window.submitOrder = function() {
+  const name = document.getElementById("name").value.trim();
+  const address = document.getElementById("address").value.trim();
+
+  if (!name || !address || cart.length === 0) {
+    document.getElementById("message").innerText = "Fill everything!";
+    return;
+  }
+
+  document.getElementById("message").innerText =
+    "Order placed successfully!";
+
+  cart = [];
+  updateCart();
 }
 
-button {
-  background: #00d4ff;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  margin-top: 10px;
-  width: 100%;
-  border-radius: 5px;
-}
+loadProducts();
 
-button:hover {
-  background: #6a00ff;
-}
-
-section {
-  margin: 10px;
-  padding: 15px;
-  background: #141428;
-  border-radius: 10px;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0;
-}
+});
