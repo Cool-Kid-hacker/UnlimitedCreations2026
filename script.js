@@ -1,70 +1,52 @@
-let products = [
-  { id: 1, name: "Custom Item 1", price: 10 },
-  { id: 2, name: "Custom Item 2", price: 15 },
-  { id: 3, name: "Custom Item 3", price: 20 }
-];
-
-let cart = [];
-
-function displayProducts() {
-  const container = document.getElementById("products");
-
-  products.forEach(p => {
-    container.innerHTML += `
-      <div class="product">
-        <h3>${p.name}</h3>
-        <p>$${p.price}</p>
-        <button onclick="addToCart(${p.id})">Add to Cart</button>
-      </div>
-    `;
-  });
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0f0f1a;
+  color: white;
 }
 
-function addToCart(id) {
-  const item = products.find(p => p.id === id);
-  cart.push(item);
-  updateCart();
+header {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(90deg, #6a00ff, #00d4ff);
 }
 
-function updateCart() {
-  const container = document.getElementById("cart-items");
-  container.innerHTML = "";
-
-  let total = 0;
-
-  cart.forEach(item => {
-    container.innerHTML += `<p>${item.name} - $${item.price}</p>`;
-    total += item.price;
-  });
-
-  document.getElementById("total").innerText = "Total: $" + total;
+#products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 20px;
 }
 
-function submitOrder() {
-  const name = document.getElementById("name").value;
-  const address = document.getElementById("address").value;
-  const email = document.getElementById("email").value;
-
-  if (!name || !address || cart.length === 0) {
-    document.getElementById("message").innerText = "Fill everything!";
-    return;
-  }
-
-  let order = {
-    name,
-    address,
-    email,
-    items: cart,
-    total: cart.reduce((sum, i) => sum + i.price, 0)
-  };
-
-  console.log("ORDER:", order);
-
-  document.getElementById("message").innerText =
-    "Order placed! (Next step: connect Google Sheets or Stripe)";
-
-  cart = [];
-  updateCart();
+.product {
+  background: #1a1a2e;
+  padding: 15px;
+  border-radius: 10px;
 }
 
-displayProducts();
+button {
+  background: #00d4ff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: #6a00ff;
+}
+
+section {
+  margin: 10px;
+  padding: 15px;
+  background: #141428;
+  border-radius: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+}
